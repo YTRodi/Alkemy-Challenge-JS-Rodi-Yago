@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 // Exporto el modelo
 module.exports = ( sequelize, type ) => {
@@ -16,7 +16,7 @@ module.exports = ( sequelize, type ) => {
         concept: type.STRING,
         amount: type.INTEGER,
         date: type.DATE
-        
+
     });
 
 }
