@@ -1,14 +1,22 @@
+const dotenv = require('dotenv');
+dotenv.config( { path: __dirname + '\\.env' } );
+
 const express = require( 'express' );
 const bodyParser = require( 'body-parser' );
 const router = require( './src/network/routes' );
-require('dotenv').config( { path: __dirname + '\\.env' } );
+const db = require( './src/database' );
 
 const app = express();
 const response = require( './src/network/response' );
+const morgan = require( 'morgan' );
 
 
 // Content-type
 app.use( bodyParser.json() );
+
+
+// Middleware
+app.use( morgan( 'dev' ) );
 
 
 // Routes
@@ -18,5 +26,8 @@ app.use( (req, res) =>  response.error( req, res, '404 Not Found', 404, 'Invalid
 
 // Port listening
 app.listen( process.env.PORT, () => {
+
     console.log( `Listening http://localhost:${ process.env.PORT }` );
+    db.connectDB();
+
 });
