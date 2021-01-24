@@ -1,6 +1,6 @@
-const { Sequelize } = require('sequelize');
+const { DataTypes } = require( 'sequelize' );
 
-// Exporto el modelo
+// Export the model
 module.exports = ( sequelize, type ) => {
 
     // #1 Nombre de la tabla que vamos a generar en singular.
@@ -8,15 +8,34 @@ module.exports = ( sequelize, type ) => {
     return sequelize.define( 'operation', {
 
         id: {
-            type: type.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        id_user: type.INTEGER,
-        concept: type.STRING,
-        amount: type.INTEGER,
-        date: type.DATE
-
+        id_user: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        concept: {
+            type: DataTypes.STRING( 60 ),
+            allowNull: false,
+            validate: {
+                len: [ 2, 60 ]
+            }
+        },
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        date: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        type: {
+            type: DataTypes.STRING( 10 ),
+            allowNull: false
+        }
+        
     });
 
 }

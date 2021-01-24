@@ -1,12 +1,12 @@
 const chalk = require( 'chalk' );
 
-exports.success = ( req, res, message, status ) => {
+exports.success = ( req, res, result, message, status ) => {
 
-    console.log( chalk.cyan( `[response success]: ${ message }` ) );
+    console.log( chalk.cyan( `[response success]: '${ message }'` ) );
 
     res.status( status || 200 ).send({
         error: '',
-        body: message
+        body: result
     });
 
 };

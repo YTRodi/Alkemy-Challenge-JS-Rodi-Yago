@@ -2,43 +2,140 @@ const express = require( 'express' );
 const response = require( '../../network/response' );
 const router = express.Router();
 
-router.get( '/', ( req, res ) => {
-    response.success( req, res, 'List of operations' );
+const { models } = require( '../../database' );
+const { Operation } = models;
 
-    // response.error( req, res, 'Unexpected error', 500, 'Internal error (generic error)' );
+
+router.get( '/', async( req, res ) => {
+
+    try {
+        
+        const operations = await Operation.findAll();
+
+        ( operations.length === 0 )
+            ? response.success( req, res, operations, 'Empty operations' )
+            : response.success( req, res, operations, 'List all operations' )
+
+    } catch ( error ) {
+        
+        response.error( req, res, 'Unexpected error', 500, 'Internal error' );
+
+    }
 
 });
 
-router.get( '/:id', ( req, res ) => {
-    // console.log(typeof parseInt( req.params.id ) )
-    console.log( `The id passed by parameter is: ${ req.params.id }` );
+router.get( '/:id', async( req, res ) => {
 
-    response.success( req, res, 'Get operation by id' );
+    try {
+        
+        // returns an array!
+        const OperationById = await Operation.findAll( {
+            where: { id : req.params.id }
+        });
+
+
+        if ( OperationById.length === 0 ) 
+            response.error( req, res, `Couldn't get - id doesn't exists.`, 400, 'Controller error')
+        else {
+
+            const [ operation ] = OperationById;
+            const { dataValues } = operation;
+
+            dataValues
+                ? response.success( req, res, dataValues, 'Get operation by id' )
+                : response.error( req, res, `Couldn't get - id doesn't exists.`, 400, 'Controller error')
+
+        }
+    
+
+    } catch ( error ) {
+        
+        response.error( req, res, 'Unexpected error', 500, 'Internal error' );
+
+    }
     
 });
 
-router.post( '/add', ( req, res ) => {
-    // console.log(req.body);
-    response.success( req, res, 'Add operation', 201 );
-    
-    // response.error( req, res, 'Unexpected error', 400, 'Controller error' );
+router.post( '/add', async( req, res ) => {
+
+    try {
+
+        const { id_user } = req.body;
+        const { operation } = req.body;
+        
+        const bodyOperation = {
+            id_user,
+            concept: operation.concept,
+            amount: operation.amount,
+            date: new Date(),
+            type: operation.type
+        };
+        
+        const newOperation = await Operation.create( bodyOperation );
+
+        newOperation
+            ? response.success( req, res, newOperation, 'created', 201 )
+            : response.error( req, res, `Couldn't create.` , 400, 'Controller error' )
+
+    } catch ( error ) {
+
+        response.error( req, res, error, 400, 'Controller error' );
+
+    }
 
 });
 
-router.put( '/update/:id', ( req, res ) => {
-    // console.log(typeof parseInt( req.params.id ) )
-    response.success( req, res, 'Update operation', 200 );
+router.put( '/update/:id', async( req, res ) => {
 
-    // response.error( req, res, 'Unexpected error', 500, 'Controller error' );
+    try {
+
+        const { id_user } = req.body;
+        const { operation } = req.body;
+
+        const bodyOperation = {
+            id_user,
+            concept: operation.concept,
+            amount: operation.amount,
+            date: new Date(),
+            type: operation.type
+        };
+        
+        const updateOperation = await Operation.update( bodyOperation, {
+            where: { id: req.params.id }
+        });
+
+        // [ 1 ] = exist
+        // [ 0 ] = doesn't exist
+        updateOperation.length !== 0 && updateOperation[0] !== 0 && updateOperation
+            ? response.success( req, res, 'updated successfully', 'updated', 200 )
+            : response.error( req, res, `Couldn't update - id doesn't exists.`, 500, 'Controller error' )
+        
+
+    } catch ( error ) {
+        
+        response.error( req, res, error, 500, 'Controller error' );
+
+    }
     
 });
 
-router.delete( '/delete/:id', ( req, res ) => {
-    console.log( `The id passed by parameter is: ${ req.params.id }` );
+router.delete( '/delete/:id', async( req, res ) => {
 
-    response.success( req, res, 'Delete operation', 200 );
+    try {
+        
+        const deleteOperation = await Operation.destroy( {
+            where: { id: req.params.id }
+        });
 
-    // response.error( req, res, 'Unexpected error', 500, 'Controller error' );
+        deleteOperation !== 0 && deleteOperation
+            ? response.success( req, res, 'deleted successfully', 'deleted', 200 )
+            : response.error( req, res, `Couldn't delete - id doesn't exists.`, 500, 'Controller error' )
+
+    } catch ( error ) {
+
+        response.error( req, res, error, 500, 'Controller error' );
+        
+    }
     
 });
 
