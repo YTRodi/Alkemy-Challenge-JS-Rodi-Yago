@@ -1,7 +1,7 @@
 const { DataTypes } = require( 'sequelize' );
 
 // Export the model
-module.exports = ( sequelize, type ) => {
+module.exports = ( sequelize ) => {
 
     // #1 Nombre de la tabla que vamos a generar en singular.
     // #2 Obj con los campos a generar.
