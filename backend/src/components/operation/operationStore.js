@@ -25,7 +25,7 @@ const updateOperation = async( idOperation, bodyOperation ) => {
         where: { id: idOperation }
     });
 
-}
+};
 
 const deleteOperation = async( idOperation ) => {
 
@@ -33,7 +33,7 @@ const deleteOperation = async( idOperation ) => {
         where: { id: idOperation }
     });
 
-}
+};
 
 
 module.exports = {
