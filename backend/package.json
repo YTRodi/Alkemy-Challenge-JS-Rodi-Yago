@@ -4,10 +4,12 @@
   "description": "Challenge JS - Alkemy - Rodi Yago",
   "main": "server.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.9.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "sequelize": "^6.4.0"
