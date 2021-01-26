@@ -9,7 +9,7 @@ router.get( '/', ( req, res ) => {
     controller.getAllOperations()
         .then( ( list ) => {
 
-            response.success( req, res, list, 'Empty operations' );
+            response.success( req, res, list, 'List of operations' );
             
         })
         .catch( ( err ) => {
