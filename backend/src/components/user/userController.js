@@ -1,4 +1,5 @@
 const userStore = require( './userStore' );
+const bcryptjs = require( 'bcryptjs' );
 
 const getAllUsers = () => {
 
@@ -60,6 +61,14 @@ const addUser = ( bodyUser ) => {
             if( !bodyUser )
                 reject( { message: `Invalid data: bodyUser is undefined.` } );
         
+
+            bodyUser = {
+                ...bodyUser,
+                // #1 Que cosa voy a encriptar
+                // #2 Veces que se va a aplicar el agoritmo de encriptación
+                password: bcryptjs.hashSync( bodyUser.password, 10 )
+            }
+
             const newUser = await userStore.add( bodyUser );
 
             !newUser
