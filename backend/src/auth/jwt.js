@@ -6,9 +6,10 @@ const createToken = ( user ) => {
 
     const payload = {
         userId: user.id,
+        email: user.email,
         createdAt: moment().unix()
     }
-
+    
     return jwt.encode( payload, process.env.SECRET_PASS );
 
 };

@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get( '/all', ( req, res ) => {
 
-    controller.getAllOperations()
+    controller.getAllOperations( req.userId )
         .then( ( list ) => {
 
             response.success( req, res, list, 'List of operations' );

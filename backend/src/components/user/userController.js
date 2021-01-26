@@ -4,7 +4,7 @@ const { createToken } = require( '../../auth/jwt' );
 
 
 const loginUser = ( { email, password } ) => {
-
+    
     return new Promise( async( resolve, reject ) => {
         
         try {
@@ -14,7 +14,6 @@ const loginUser = ( { email, password } ) => {
             if ( !user )
                 reject( { message: 'Error in email and/or password' } );
         
-
             // #1 Unencrypted value
             // #2 Encrypted value
             const equals = bcryptjs.compareSync( password, user.password );
@@ -114,6 +113,7 @@ const addUser = ( bodyUser ) => {
 
             bodyUser = {
                 ...bodyUser,
+                balance: 0,
                 // #1 Que cosa voy a encriptar
                 // #2 Veces que se va a aplicar el agoritmo de encriptación
                 password: bcryptjs.hashSync( bodyUser.password, 10 )

@@ -1,7 +1,9 @@
 const { models: { Operation } } = require( '../../database' );
 
-const getAllOperations = async () => { 
-    return await Operation.findAll();
+const getAllOperations = async ( userId ) => { 
+    return await Operation.findAll( {
+        where: { userId: userId }
+    } );
 };
 
 const getOperationById = async ( idOperation ) => {

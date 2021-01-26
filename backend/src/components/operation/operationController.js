@@ -1,16 +1,16 @@
 const operationStore = require("./operationStore");
 
 
-const getAllOperations = () => {
+const getAllOperations = ( userId ) => {
 
     return new Promise( async( resolve, reject ) => {
        
         try {
             
-            const allOperations = await operationStore.list();
+            const allOperations = await operationStore.list( userId );
 
             if( allOperations.length === 0 )
-                resolve( 'Empty operations' );
+                resolve( 'Empty operations list' );
             
             resolve( allOperations );
 
