@@ -3,6 +3,10 @@ const response = require( '../../network/response' );
 const controller = require( './userController' );
 const router = express.Router();
 
+// check: Comprueba los diferentes datos que estoy insertando en la ruta que esto trabajando.
+// validationResult: Va a validar los campos que yo ponga en el array de check's
+const { check, validationResult } = require( 'express-validator' );
+
 router.get( '/all', ( req, res ) => {
 
     controller.getAllUsers()
@@ -37,7 +41,20 @@ router.get( '/:id', ( req, res ) => {
 
 });
 
-router.post( '/add', ( req, res ) => {
+// add middleware 'express-validator'
+router.post( '/add', [
+
+    check( 'username', 'username is required' ).not().isEmpty(),
+    check( 'password', 'password is required' ).not().isEmpty(),
+    check( 'email', 'email is requiredo' ).isEmail()
+
+], ( req, res ) => {
+
+    const errors = validationResult( req );
+
+    if ( !errors.isEmpty() ) {
+        response.error( req, res, errors.array(), 422, 'Unprocessable Entity' )
+    }
 
     controller.addUser( req.body )
         .then( ( newUser ) => {
