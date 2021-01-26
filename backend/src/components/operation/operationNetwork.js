@@ -3,8 +3,17 @@ const response = require( '../../network/response' );
 const controller = require( './operationController' );
 const router = express.Router();
 
+/**
+ * EXAMPLE JSON ( userId == req.userId )
+ * 
+    {
+        "concept": "smartv LG",
+        "amount": 115000,
+        "type": "egreso"
+    }
+ */
 
-router.get( '/', ( req, res ) => {
+router.get( '/all', ( req, res ) => {
 
     controller.getAllOperations()
         .then( ( list ) => {
@@ -41,9 +50,10 @@ router.get( '/:id', ( req, res ) => {
 
 router.post( '/add', ( req, res ) => {
 
-    const { id_user, operation } = req.body;
+    const userId = req.userId;
+    const operation = req.body;
 
-    controller.addOperation( id_user, operation )
+    controller.addOperation( userId, operation )
         .then( ( newOperation ) => {
             
             response.success( req, res, newOperation, 'created', 201 );
@@ -57,12 +67,14 @@ router.post( '/add', ( req, res ) => {
 
 });
 
+
 router.put( '/update/:id', ( req, res ) => {
 
-    const { id_user, operation } = req.body;
     const { id } = req.params;
+    const userId = req.userId;
+    const operation = req.body;
 
-    controller.updateOperation( id, id_user, operation)
+    controller.updateOperation( id, userId, operation)
         .then( ( updatedOperation ) => {
             
             response.success( req, res, updatedOperation, 'updated', 200 );
@@ -75,6 +87,7 @@ router.put( '/update/:id', ( req, res ) => {
         });
     
 });
+
 
 router.delete( '/delete/:id', ( req, res ) => {
 
@@ -93,5 +106,6 @@ router.delete( '/delete/:id', ( req, res ) => {
         });
     
 });
+
 
 module.exports = router;

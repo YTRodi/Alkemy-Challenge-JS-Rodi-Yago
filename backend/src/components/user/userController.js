@@ -1,5 +1,40 @@
 const userStore = require( './userStore' );
 const bcryptjs = require( 'bcryptjs' );
+const { createToken } = require( '../../auth/jwt' );
+
+
+const loginUser = ( { email, password } ) => {
+
+    return new Promise( async( resolve, reject ) => {
+        
+        try {
+        
+            const user = await userStore.login( email );
+            
+            if ( !user )
+                reject( { message: 'Error in email and/or password' } );
+        
+
+            // #1 Unencrypted value
+            // #2 Encrypted value
+            const equals = bcryptjs.compareSync( password, user.password );
+
+            if ( !equals ) 
+                reject( { message: 'Error in email and/or password' } );
+            
+            const token = createToken( user );
+            resolve( { token } )
+                
+
+        } catch ( error ) {
+            
+            reject( { message: 'Unexpected error', error } );
+            
+        }     
+
+    });
+
+};
 
 const getAllUsers = () => {
 
@@ -38,7 +73,22 @@ const getUserById = ( idUser ) => {
             if( !userById ) 
                 reject( { message: `Couldn't get - id doesn't exists.` } );
 
-
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
+            console.log(userById.username)
             const { dataValues } = userById;
             resolve( dataValues );
 
@@ -68,6 +118,8 @@ const addUser = ( bodyUser ) => {
                 // #2 Veces que se va a aplicar el agoritmo de encriptación
                 password: bcryptjs.hashSync( bodyUser.password, 10 )
             }
+
+            console.log(bodyUser)
 
             const newUser = await userStore.add( bodyUser );
 
@@ -139,6 +191,7 @@ const deleteUser = ( idUser ) => {
 };
 
 module.exports = {
+    loginUser,
     getAllUsers,
     getUserById,
     addUser,

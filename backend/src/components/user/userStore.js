@@ -1,5 +1,13 @@
 const { models: { User } } = require( '../../database' );
 
+const login = async ( email ) => {
+
+    return await User.findOne( {
+        where: { email }
+    });
+
+};
+
 const getAllUsers = async() => {
     return await User.findAll();
 };
@@ -36,6 +44,7 @@ const deleteUser = async( idUser ) => {
 };
 
 module.exports = {
+    login,
     list: getAllUsers,
     userById: getOperationById,
     add: addUser,

@@ -1,5 +1,6 @@
 const operationStore = require("./operationStore");
 
+
 const getAllOperations = () => {
 
     return new Promise( async( resolve, reject ) => {
@@ -22,6 +23,7 @@ const getAllOperations = () => {
     });
     
 };
+
 
 const getOperationById = ( idOperation ) => {
 
@@ -51,24 +53,25 @@ const getOperationById = ( idOperation ) => {
 
 };
 
-const addOperation = ( id_user, operation ) => {
+
+const addOperation = ( userId, operation ) => {
 
     return new Promise( async( resolve, reject ) => {
         
         try {
 
-            if( !id_user && !operation ) 
-                reject( { message: `Invalid data: id_user or operation is undefined.` } );
+            if( !userId || !operation ) 
+                reject( { message: `Invalid data: userId or operation is undefined.` } );
             
             
             const bodyOperation = {
-                id_user,
+                userId,
                 concept: operation.concept,
                 amount: operation.amount,
                 date: new Date(),
                 type: operation.type
             };
-        
+            
             const newOperation = await operationStore.add( bodyOperation );
 
             !newOperation
@@ -78,34 +81,32 @@ const addOperation = ( id_user, operation ) => {
         } catch (error) {
             
             reject( { message: error } );
-
         }
         
     });
 
 };
 
-// const updateOperation = ( id_user, operation ) // Un usuario tiene muchas operaciones.
-const updateOperation = ( idOperation, id_user, operation ) => {
+
+const updateOperation = ( idOperation, userId, operation ) => {
 
     return new Promise( async( resolve, reject ) => {
         
         try {
 
-            if ( !idOperation && id_user && operation )
-                reject( { message: `Invalid data: id, id_user or operation is undefined.` } );
+            if ( !idOperation || !userId || !operation )
+                reject( { message: `Invalid data: id, userId or operation is undefined.` } );
                 
 
             const bodyOperation = {
                 id: idOperation,
-                id_user,
+                userId,
                 concept: operation.concept,
                 amount: operation.amount,
                 date: new Date(),
                 type: operation.type
             };
-            
-            
+
             const [ result ] = await operationStore.update( idOperation, bodyOperation );
 
             result !== 0 && result
@@ -123,16 +124,17 @@ const updateOperation = ( idOperation, id_user, operation ) => {
 
 };
 
-const deleteOperation = ( id ) => {
+
+const deleteOperation = ( idOperation ) => {
 
     return new Promise( async( resolve, reject ) => {
     
         try {
             
-            if( !id )
-                reject( { message: `Invalid data: id is undefined.` } );
+            if( !idOperation )
+                reject( { message: `Invalid data: idOperation = ${ idOperation }` } );
 
-            const result = await operationStore.delete( id );
+            const result = await operationStore.delete( idOperation );
 
             result !== 0 && result
                 ? resolve( 'deleted successfully' )

@@ -7,6 +7,25 @@ const router = express.Router();
 // validationResult: Va a validar los campos que yo ponga en el array de check's
 const { check, validationResult } = require( 'express-validator' );
 
+
+// LOGIN
+router.post( '/login', ( req, res ) => {
+
+    controller.loginUser( req.body )
+        .then( ( jwt ) => {
+            
+            response.success( req, res, jwt, 'created', 200 );
+
+        })
+        .catch( ( err ) => {
+            
+            response.error( req, res, err, 400, 'Controller error' );
+
+        });
+
+});
+
+
 router.get( '/all', ( req, res ) => {
 
     controller.getAllUsers()
@@ -22,6 +41,7 @@ router.get( '/all', ( req, res ) => {
         });
 
 });
+
 
 router.get( '/:id', ( req, res ) => {
 
@@ -41,7 +61,7 @@ router.get( '/:id', ( req, res ) => {
 
 });
 
-// add middleware 'express-validator'
+
 router.post( '/add', [
 
     check( 'username', 'username is required' ).not().isEmpty(),
@@ -63,17 +83,17 @@ router.post( '/add', [
 
         })
         .catch( ( err ) => {
-            console.log(err)
+            
             response.error( req, res, err, 400, 'Controller error' );
 
         });
 
 });
 
+
 router.put( '/update/:id', ( req, res ) => {
 
     const { id } = req.params;
-    console.log(req.body);
 
     controller.updateUser( id, req.body)
         .then( ( updatedUser ) => {
@@ -88,6 +108,7 @@ router.put( '/update/:id', ( req, res ) => {
         });
     
 });
+
 
 router.delete( '/delete/:id', ( req, res ) => {
 
@@ -106,5 +127,6 @@ router.delete( '/delete/:id', ( req, res ) => {
         });
     
 });
+
 
 module.exports = router;
