@@ -50,8 +50,8 @@ router.get( '/:id', ( req, res ) => {
 
 router.post( '/add', ( req, res ) => {
 
-    const userId = req.userId;
     const operation = req.body;
+    const userId = req.userId;//id del usuario
 
     controller.addOperation( userId, operation )
         .then( ( newOperation ) => {
@@ -71,7 +71,7 @@ router.post( '/add', ( req, res ) => {
 router.put( '/update/:id', ( req, res ) => {
 
     const { id } = req.params;
-    const userId = req.userId;
+    const userId = req.userId; // id del usuario
     const operation = req.body;
 
     controller.updateOperation( id, userId, operation)
@@ -92,8 +92,9 @@ router.put( '/update/:id', ( req, res ) => {
 router.delete( '/delete/:id', ( req, res ) => {
 
     const { id } = req.params;
+    const userId = req.userId; // id del usuario
     
-    controller.deleteOperation( id )
+    controller.deleteOperation( id, userId )
         .then( ( deletedOperation ) => {
             
             response.success( req, res, deletedOperation, 'updated', 200 );

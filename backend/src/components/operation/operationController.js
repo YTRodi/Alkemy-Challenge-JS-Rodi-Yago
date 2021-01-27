@@ -1,6 +1,6 @@
 const operationStore = require("./operationStore");
 const { models: { User } } = require( '../../database' );
-const controller = require( '../user/userController' );
+const controllerUser = require( '../user/userController' );
 
 
 const getAllOperations = ( userId ) => {
@@ -73,7 +73,7 @@ const addOperation = ( userId, operation ) => {
             };
 
             // PASAR A UNA FUNCIÓN - START
-            let userById = await controller.getUserById( userId );
+            let userById = await controllerUser.getUserById( userId );
 
             if ( userById.balance < 0 ) 
                 reject( { message: 'Balance = 0 😨' } );
@@ -111,7 +111,7 @@ const addOperation = ( userId, operation ) => {
 
 
                 // HAGO EL UPDATE DEL USUARIO Y EL ADD DE LA OPERACIÓN.
-                const updateResult = await controller.updateUser( userId, userById );
+                const updateResult = await controllerUser.updateUser( userId, userById );
                 
                 const newOperation = await operationStore.add( bodyOperation );
                 
@@ -127,8 +127,6 @@ const addOperation = ( userId, operation ) => {
                 reject( { message: `The amount cannot be ${ bodyOperation.amount }` } );
 
             }
-                
-            
             
 
         } catch (error) {
@@ -149,18 +147,26 @@ const updateOperation = ( idOperation, userId, operation ) => {
 
             if ( !idOperation || !userId || !operation )
                 reject( { message: `Invalid data: id, userId or operation is undefined.` } );
-                
 
-            const bodyOperation = {
-                id: idOperation,
-                userId,
+            // VALIDACIÓN USER : OPERATION - START (match userId (user) with userId (operation))
+            let operationById = await getOperationById( idOperation );
+
+            if ( operationById.userId !== userId )
+                reject( { message: "Cannot modify other user's operations." } );
+            
+            // VALIDACIÓN USER : OPERATION - END
+            
+
+            // Use of the spread operator
+            const { dataValues } = operationById; 
+
+            operationById = {
+                ...dataValues,
                 concept: operation.concept,
-                amount: operation.amount,
-                date: new Date(),
-                type: operation.type
-            };
+                date: new Date( operation.date )
+            }
 
-            const [ result ] = await operationStore.update( idOperation, bodyOperation );
+            const [ result ] = await operationStore.update( idOperation, operationById );
 
             result !== 0 && result
                 ? resolve( 'updated successfully' )
@@ -178,7 +184,7 @@ const updateOperation = ( idOperation, userId, operation ) => {
 };
 
 
-const deleteOperation = ( idOperation ) => {
+const deleteOperation = ( idOperation, userId ) => {
 
     return new Promise( async( resolve, reject ) => {
     
@@ -187,6 +193,15 @@ const deleteOperation = ( idOperation ) => {
             if( !idOperation )
                 reject( { message: `Invalid data: idOperation = ${ idOperation }` } );
 
+
+            // VALIDACIÓN USER : OPERATION - START (match userId (user) with userId (operation))
+            let operationById = await getOperationById( idOperation );
+
+            if ( operationById.userId !== userId )
+                reject( { message: "Cannot modify other user's operations." } );
+            // VALIDACIÓN USER : OPERATION - END
+            
+        
             const result = await operationStore.delete( idOperation );
 
             result !== 0 && result
@@ -195,7 +210,7 @@ const deleteOperation = ( idOperation ) => {
 
 
         } catch (error) {
-         
+            
             reject( { message: error } );
             
         }
