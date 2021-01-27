@@ -58,38 +58,21 @@ const getAllUsers = () => {
     
 };
 
-const getUserById = ( idUser ) => {
+const getUserById = ( userId ) => {
 
     return new Promise( async( resolve, reject ) => {
     
         try {
             
-            if( !idUser )
-                reject( { message: `Invalid data: id = ${ idUser }` } );
+            if( !userId )
+                reject( { message: `Invalid data: id = ${ userId }` } );
 
-            const userById = await userStore.userById( idUser );
+            const userById = await userStore.userById( userId );
             
             if( !userById ) 
                 reject( { message: `Couldn't get - id doesn't exists.` } );
 
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-// VERIFICAR: NO HACE FALTA DESESTRUCTURAR, PUEDO ENVIAR EL userById de una.
-            console.log(userById.username)
-            const { dataValues } = userById;
-            resolve( dataValues );
+            resolve( userById );
 
         } catch ( error ) {
             
@@ -137,20 +120,20 @@ const addUser = ( bodyUser ) => {
 
 };
 
-const updateUser = ( idUser, bodyUser ) => {
+const updateUser = ( userId, bodyUser ) => {
 
     return new Promise( async( resolve, reject ) => {
         
         try {
 
-            if ( !idUser && !bodyUser )
-                reject( { message: `Invalid data: idUser or bodyUser is undefined.` } );
+            if ( !userId && !bodyUser )
+                reject( { message: `Invalid data: userId or bodyUser is undefined.` } );
             
             
-            const [ result ] = await userStore.update( idUser, bodyUser );
-
+            const [ result ] = await userStore.update( userId, bodyUser );
+            
             result !== 0 && result
-                ? resolve( 'updated successfully' )
+                ? resolve( 'Updated successfully' )
                 : reject( `Couldn't update - id doesn't exists.` )
             
 
@@ -164,16 +147,16 @@ const updateUser = ( idUser, bodyUser ) => {
 
 };
 
-const deleteUser = ( idUser ) => {
+const deleteUser = ( userId ) => {
 
     return new Promise( async( resolve, reject ) => {
     
         try {
             
-            if( !idUser )
+            if( !userId )
                 reject( { message: `Invalid data: id is undefined.` } );
 
-            const result = await userStore.delete( idUser );
+            const result = await userStore.delete( userId );
 
             result !== 0 && result
                 ? resolve( 'deleted successfully' )

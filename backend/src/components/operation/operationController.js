@@ -1,4 +1,6 @@
 const operationStore = require("./operationStore");
+const { models: { User } } = require( '../../database' );
+const controller = require( '../user/userController' );
 
 
 const getAllOperations = ( userId ) => {
@@ -39,9 +41,7 @@ const getOperationById = ( idOperation ) => {
             if( !operationById ) 
                 reject( { message: `Couldn't get - id doesn't exists.` } );
 
-
-            const { dataValues } = operationById;
-            resolve( dataValues );
+            resolve( operationById );
 
         } catch ( error ) {
             
@@ -71,15 +71,68 @@ const addOperation = ( userId, operation ) => {
                 date: new Date(),
                 type: operation.type
             };
-            
-            const newOperation = await operationStore.add( bodyOperation );
 
-            !newOperation
-                ? reject( { message: `Couldn't create.` } )
-                : resolve( newOperation )
+            // PASAR A UNA FUNCIÓN - START
+            let userById = await controller.getUserById( userId );
+
+            if ( userById.balance < 0 ) 
+                reject( { message: 'Balance = 0 😨' } );
+
+
+            if ( bodyOperation.amount > 0 ) {
+
+                // RESTO EL BALANCE DEL USUARIO         
+                switch ( bodyOperation.type ) {
+                    
+                    case 'ingreso':
+
+                        userById = {
+                            ...userById,
+                            balance: userById.balance + bodyOperation.amount
+                        }
+
+                        break;
+
+                    case 'egreso':
+
+                        userById = {
+                            ...userById,
+                            balance: // Logic: when the amount is greater than the balance...
+                                ( bodyOperation.amount > userById.balance )
+                                    ? reject( { message: 'Not enough funds 😭' } )
+                                    : userById.balance - bodyOperation.amount
+                        }
+
+                        break;
+                
+                }
+                // PASAR A UNA FUNCIÓN - END
+
+
+
+                // HAGO EL UPDATE DEL USUARIO Y EL ADD DE LA OPERACIÓN.
+                const updateResult = await controller.updateUser( userId, userById );
+                
+                const newOperation = await operationStore.add( bodyOperation );
+                
+                if( updateResult === `Couldn't update - id doesn't exists.` )
+                    reject( { message: updateResult } );
+
+
+                if( updateResult === `Updated successfully` )
+                    resolve( newOperation )
+
+            } else {
+
+                reject( { message: `The amount cannot be ${ bodyOperation.amount }` } );
+
+            }
+                
+            
+            
 
         } catch (error) {
-            
+
             reject( { message: error } );
         }
         
