@@ -8,8 +8,7 @@ const router = express.Router();
  * 
     {
         "concept": "smartv LG",
-        "amount": 115000,
-        "type": "egreso"
+        "amount": 115000
     }
  */
 

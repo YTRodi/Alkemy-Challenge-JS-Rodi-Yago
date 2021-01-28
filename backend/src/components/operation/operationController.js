@@ -1,6 +1,7 @@
 const operationStore = require("./operationStore");
 const { models: { User } } = require( '../../database' );
 const controllerUser = require( '../user/userController' );
+const userActions = require( '../../actions/userActions' );
 
 
 const getAllOperations = ( userId ) => {
@@ -72,62 +73,34 @@ const addOperation = ( userId, operation ) => {
                 type: operation.type
             };
 
-            // PASAR A UNA FUNCIÓN - START
-            let userById = await controllerUser.getUserById( userId );
+            const userById = await controllerUser.getUserById( userId );
 
             if ( userById.balance < 0 ) 
-                reject( { message: 'Balance = 0 😨' } );
-
-
-            if ( bodyOperation.amount > 0 ) {
-
-                // RESTO EL BALANCE DEL USUARIO         
-                switch ( bodyOperation.type ) {
-                    
-                    case 'ingreso':
-
-                        userById = {
-                            ...userById,
-                            balance: userById.balance + bodyOperation.amount
-                        }
-
-                        break;
-
-                    case 'egreso':
-
-                        userById = {
-                            ...userById,
-                            balance: // Logic: when the amount is greater than the balance...
-                                ( bodyOperation.amount > userById.balance )
-                                    ? reject( { message: 'Not enough funds 😭' } )
-                                    : userById.balance - bodyOperation.amount
-                        }
-
-                        break;
-                
-                }
-                // PASAR A UNA FUNCIÓN - END
-
-
-
-                // HAGO EL UPDATE DEL USUARIO Y EL ADD DE LA OPERACIÓN.
-                const updateResult = await controllerUser.updateUser( userId, userById );
-                
-                const newOperation = await operationStore.add( bodyOperation );
-                
-                if( updateResult === `Couldn't update - id doesn't exists.` )
-                    reject( { message: updateResult } );
-
-
-                if( updateResult === `Updated successfully` )
-                    resolve( newOperation )
-
-            } else {
-
-                reject( { message: `The amount cannot be ${ bodyOperation.amount }` } );
-
-            }
+                reject( { message: 'Balance = 0' } );
             
+            // check
+            const result = userActions.checkBalanceAmount( userById, bodyOperation );
+
+            if ( !result ) 
+                reject( { message: `Amount cannot be less than or equal to 0` } );
+
+
+            if ( result === 'Not enough funds' ) 
+                reject( { message: result } );
+
+
+            // update user and add operation
+            const updateResult = await controllerUser.updateUser( userId, userById );
+            
+            const newOperation = await operationStore.add( bodyOperation );
+            
+            if( updateResult === `Couldn't update - id doesn't exists.` )
+                reject( { message: updateResult } );
+
+
+            if( updateResult === `Updated successfully` )
+                resolve( newOperation )
+                   
 
         } catch (error) {
 
@@ -148,15 +121,14 @@ const updateOperation = ( idOperation, userId, operation ) => {
             if ( !idOperation || !userId || !operation )
                 reject( { message: `Invalid data: id, userId or operation is undefined.` } );
 
-            // VALIDACIÓN USER : OPERATION - START (match userId (user) with userId (operation))
+            
+            // VALIDACIÓN USER : OPERATION (match userId (user) with userId (operation))
             let operationById = await getOperationById( idOperation );
 
             if ( operationById.userId !== userId )
                 reject( { message: "Cannot modify other user's operations." } );
             
-            // VALIDACIÓN USER : OPERATION - END
-            
-
+                
             // Use of the spread operator
             const { dataValues } = operationById; 
 

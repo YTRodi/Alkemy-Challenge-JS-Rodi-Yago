@@ -126,7 +126,7 @@ const updateUser = ( userId, bodyUser ) => {
         
         try {
 
-            if ( !userId && !bodyUser )
+            if ( !userId || !bodyUser )
                 reject( { message: `Invalid data: userId or bodyUser is undefined.` } );
             
             
