@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config( { path: __dirname + '\\.env' } );
+const cors = require( 'cors' );
 
 const express = require( 'express' );
 const bodyParser = require( 'body-parser' );
@@ -10,6 +11,8 @@ const app = express();
 const response = require( './src/network/response' );
 const morgan = require( 'morgan' );
 
+// Cors
+app.use( cors() );
 
 // Content-type
 app.use( bodyParser.json() );
