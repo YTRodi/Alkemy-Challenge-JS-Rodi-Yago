@@ -14,9 +14,11 @@ export const NavBar = () => {
     };
 
     return (
-        <div className="navbar navbar-dark bg-dark mb-4">
+        <div className="navbar navbar-dark bg-dark mb-4" style={{padding:'20px'}}>
 
             <span className="navbar-brand">
+                <i className="fas fa-user"></i>
+                <span> </span>
                 { username }
             </span>
             

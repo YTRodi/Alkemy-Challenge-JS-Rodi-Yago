@@ -1,0 +1,23 @@
+{
+    "uid": 15,
+    "name": "maggielinda",
+    "token": eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE1LCJlbWFpbCI6Im1hZ2dpZUBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOjE2MTE4OTI0OTh9.J_LFZ0pujtqeob2Q7r2atwRkVSNmw54ntrJ72cbRUWQ
+}
+balance = 200000 (DEFAULT, puesto a mano).
+
+balance = 200000 - 45000 - 125000.
+
+balance = 30000.
+
+TOKEN = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE1LCJlbWFpbCI6Im1hZ2dpZUBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOjE2MTE4OTI0OTh9.J_LFZ0pujtqeob2Q7r2atwRkVSNmw54ntrJ72cbRUWQ
+
+===============================================================================================================================================================================
+===============================================================================================================================================================================
+
+{
+    "username": "maggielinda",
+    "email": "maggie@gmail.com",
+    "password": "muerdomucho"
+}
+
+TOKEN = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE1LCJlbWFpbCI6Im1hZ2dpZUBnbWFpbC5jb20iLCJjcmVhdGVkQXQiOjE2MTE3MDQzNTd9.qkrpVqbr19dunLrTi9_2dz5VgH8VqSraTnef09qb2g8

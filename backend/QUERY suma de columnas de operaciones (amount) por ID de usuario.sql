@@ -1,0 +1,1 @@
+SELECT SUM(amount) FROM db_challenge_alkemy_js.operations WHERE userId = 8;

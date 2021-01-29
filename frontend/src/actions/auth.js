@@ -100,3 +100,23 @@ export const startLogout = () => {
 };
 
 const logout = () => ({ type: types.authLogout });
+
+export const getFullUser = ( uid ) => {
+
+    return async( dispatch ) =>{
+
+        const resp = await fetchWithToken( `user/${ uid }` );
+        const body = await resp.json();
+
+        if ( !resp.ok ) {
+            
+            // dispatch( checkingFinish() ); // checking = false
+
+        } else {
+            dispatch( { type: types.getFullUser, payload: body.body } ) 
+
+        }
+
+    }
+
+};

@@ -8,4 +8,13 @@ export const types = {
     authStartTokenRenew: '[auth] Start token renew',
     authLogout: '[auth] Logout',
 
+
+    operationGetAll: '[operation] GET all operations',
+    operationPost: '[operation] POST operation',
+    operationUpdate: '[operation] UPDATE operation',
+    operationDelete: '[operation] DELETE operation',
+
+
+    getFullUser: '[user] GET full user'
+
 };
