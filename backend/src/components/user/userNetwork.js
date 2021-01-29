@@ -14,7 +14,7 @@ router.post( '/login', ( req, res ) => {
     controller.loginUser( req.body )
         .then( ( jwt ) => {
             
-            response.success( req, res, jwt, 'created', 200 );
+            response.success( req, res, jwt, 'token created', 201 );
 
         })
         .catch( ( err ) => {
