@@ -23,10 +23,10 @@ const loginUser = ( { email, password } ) => {
                 reject( { message: 'Error in email and/or password' } );
             
             const token = createToken( user );
-            
+
             resolve({
                 uid: user.id,
-                name: user.username,
+                username: user.username,
                 token: token
             })
                 
