@@ -51,7 +51,7 @@ router.get( '/login/renew', checkToken, async( req, res ) => {
         
     } catch (error) {
         
-        response.error( req, res, 'Internal error', '500', error );
+        // response.error( req, res, error, '500', 'Internal Error' );
 
     }
     

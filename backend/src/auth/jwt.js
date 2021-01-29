@@ -19,7 +19,7 @@ const checkToken = ( req, res, next ) => {
 
     // console.log(req.header('user_token'))
     if ( !req.headers[ 'user_token' ] ) {
-        return response.error( req, res, 'The token is required in the header.', 500, 'No Token' );
+        return response.error( req, res, 'The token is required in the header.', 401, 'No Token' );
     }
 
     const userToken = req.headers[ 'user_token' ];

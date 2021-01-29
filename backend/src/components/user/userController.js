@@ -145,11 +145,18 @@ const addUser = ( bodyUser ) => {
 
             // console.log(bodyUser)
             
-            const newUser = await userStore.add( bodyUser );
+            const newUser = await userStore.add( bodyUser );  
             
+            const userToken = {
+                userId: newUser.id,
+                email: newUser.email
+            };
+
+            const token = createToken( userToken );
+
             !newUser
                 ? reject( { message: `Couldn't create.` } )
-                : resolve( newUser )
+                : resolve( { ...newUser, token } )
 
         } catch (error) {
             console.log('el error es:' + error)
