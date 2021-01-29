@@ -10,6 +10,7 @@ const loginUser = ( { email, password } ) => {
         try {
         
             const user = await userStore.login( email );
+
             
             if ( !user )
                 reject( { message: 'Error in email and/or password' } );
@@ -22,11 +23,16 @@ const loginUser = ( { email, password } ) => {
                 reject( { message: 'Error in email and/or password' } );
             
             const token = createToken( user );
-            resolve( { token } )
+            
+            resolve({
+                uid: user.id,
+                name: user.username,
+                token: token
+            })
                 
 
         } catch ( error ) {
-            
+                
             reject( { message: 'Unexpected error', error } );
             
         }     
