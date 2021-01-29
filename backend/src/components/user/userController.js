@@ -11,7 +11,6 @@ const loginUser = ( { email, password } ) => {
         
             const user = await userStore.login( email );
             
-            
             if ( !user )
                 reject( { message: "The user doesn't exist with that email" } );
         
@@ -22,7 +21,13 @@ const loginUser = ( { email, password } ) => {
             if ( !equals ) 
                 reject( { message: 'Wrong password' } );
             
-            const token = createToken( user );
+            
+            const userToken = {
+                userId: user.id,
+                email: user.email
+            };
+
+            const token = createToken( userToken );
 
             resolve({
                 id: user.id,
