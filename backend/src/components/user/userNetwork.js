@@ -27,21 +27,19 @@ router.post( '/login', ( req, res ) => {
 });
 
 router.get( '/login/renew', checkToken, async( req, res ) => {
-
+    
     try {
-
+        
         // Recupero el username, para ponerlo en la response.success
         let user = await getUserByEmail( req.userEmail );
 
-        // console.log(req.userId)
-        // console.log(req.userEmail)
         const userToken = {
             userId: req.userId,
             email: req.userEmail
         }
-
+        
         const token = createToken( userToken );
-
+        
         const jwt = {
             id: req.userId,
             username: user.username,

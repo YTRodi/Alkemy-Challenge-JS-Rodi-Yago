@@ -5,7 +5,7 @@ const response = require( '../network/response' );
 const createToken = ( user ) => {
 
     const payload = {
-        userId: user.id,
+        userId: user.userId,
         email: user.email,
         createdAt: moment().unix()
     }
@@ -17,13 +17,15 @@ const createToken = ( user ) => {
 // middleware
 const checkToken = ( req, res, next ) => {
 
+    // console.log(req.header('user_token'))
     if ( !req.headers[ 'user_token' ] ) {
         return response.error( req, res, 'The token is required in the header.', 500, 'No Token' );
     }
 
     const userToken = req.headers[ 'user_token' ];
+    
     let payload = {};
-
+    
     try {
         
         payload = jwt.decode( userToken, process.env.SECRET_PASS );
