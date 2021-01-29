@@ -10,22 +10,22 @@ const loginUser = ( { email, password } ) => {
         try {
         
             const user = await userStore.login( email );
-
+            
             
             if ( !user )
-                reject( { message: 'Error in email and/or password' } );
+                reject( { message: "The user doesn't exist with that email" } );
         
             // #1 Unencrypted value
             // #2 Encrypted value
             const equals = bcryptjs.compareSync( password, user.password );
 
             if ( !equals ) 
-                reject( { message: 'Error in email and/or password' } );
+                reject( { message: 'Wrong password' } );
             
             const token = createToken( user );
 
             resolve({
-                uid: user.id,
+                id: user.id,
                 username: user.username,
                 token: token
             })
@@ -73,7 +73,7 @@ const getUserById = ( userId ) => {
             if( !userId )
                 reject( { message: `Invalid data: id = ${ userId }` } );
 
-            const userById = await userStore.userById( userId );
+            const userById = await userStore.getUserById( userId );
             
             if( !userById ) 
                 reject( { message: `Couldn't get - id doesn't exists.` } );
@@ -90,12 +90,42 @@ const getUserById = ( userId ) => {
     
 };
 
-const addUser = ( bodyUser ) => {
+const getUserByEmail = ( userEmail ) => {
 
+    return new Promise( async( resolve, reject ) => {
+    
+        try {
+            
+            if( !userEmail )
+                reject( { message: `Invalid data: email = ${ userEmail }` } );
+
+            const userByEmail = await userStore.getUserByEmail( userEmail );
+            // console.log(userByEmail)
+            if( userByEmail )
+                reject( `Couldn't get - email already exist` );
+            
+            resolve( userByEmail );
+
+        } catch ( error ) {
+            
+            reject( { message: error } );
+            
+        }
+        
+    });   
+    
+};
+
+const addUser = ( bodyUser ) => {
     return new Promise( async( resolve, reject ) => {
         
         try {
 
+            // VALIDACIÓN DE EMAIL (Si el email ya existe va al catch)
+            const { email } = bodyUser;
+            let user = await getUserByEmail( email );
+
+            
             if( !bodyUser )
                 reject( { message: `Invalid data: bodyUser is undefined.` } );
         
@@ -108,16 +138,16 @@ const addUser = ( bodyUser ) => {
                 password: bcryptjs.hashSync( bodyUser.password, 10 )
             }
 
-            console.log(bodyUser)
-
+            // console.log(bodyUser)
+            
             const newUser = await userStore.add( bodyUser );
-
+            
             !newUser
                 ? reject( { message: `Couldn't create.` } )
                 : resolve( newUser )
 
         } catch (error) {
-            
+            console.log('el error es:' + error)
             reject( { message: error } );
 
         }
@@ -183,6 +213,7 @@ module.exports = {
     loginUser,
     getAllUsers,
     getUserById,
+    getUserByEmail,
     addUser,
     updateUser,
     deleteUser: deleteUser

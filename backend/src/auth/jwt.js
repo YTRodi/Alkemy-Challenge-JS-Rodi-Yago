@@ -31,6 +31,7 @@ const checkToken = ( req, res, next ) => {
         // El objeto 'req' vamos a ir delegandolo en todos los enrutadores, acorde a la regla de negocio de la app.
         // Es decir, guardo el id del usuario logeado así puedo tomar una referencia a sus operaciones de una manera más sencilla.
         req.userId = payload.userId;
+        req.userEmail = payload.email;
 
         next();
 

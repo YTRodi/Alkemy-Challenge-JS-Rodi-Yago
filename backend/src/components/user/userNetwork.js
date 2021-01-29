@@ -6,7 +6,8 @@ const router = express.Router();
 // check: Comprueba los diferentes datos que estoy insertando en la ruta que esto trabajando.
 // validationResult: Va a validar los campos que yo ponga en el array de check's
 const { check, validationResult } = require( 'express-validator' );
-
+const { checkToken, createToken } = require('../../auth/jwt');
+const { getUserByEmail } = require( './userStore' )
 
 // LOGIN
 router.post( '/login', ( req, res ) => {
@@ -23,6 +24,39 @@ router.post( '/login', ( req, res ) => {
 
         });
 
+});
+
+router.get( '/login/renew', checkToken, async( req, res ) => {
+
+    try {
+
+        // Recupero el username, para ponerlo en la response.success
+        let user = await getUserByEmail( req.userEmail );
+
+        // console.log(req.userId)
+        // console.log(req.userEmail)
+        const userToken = {
+            userId: req.userId,
+            email: req.userEmail
+        }
+
+        const token = createToken( userToken );
+
+        const jwt = {
+            id: req.userId,
+            username: user.username,
+            token: token
+        }
+
+        response.success( req, res, jwt, 'token created', 201  );
+
+        
+    } catch (error) {
+        
+        response.error( req, res, 'Internal error', '500', error );
+
+    }
+    
 });
 
 
@@ -66,12 +100,11 @@ router.post( '/add', [
 
     check( 'username', 'username is required' ).not().isEmpty(),
     check( 'password', 'password is required' ).not().isEmpty(),
-    check( 'email', 'email is requiredo' ).isEmail()
+    check( 'email', 'email is required' ).isEmail()
 
 ], ( req, res ) => {
 
     const errors = validationResult( req );
-
     if ( !errors.isEmpty() ) {
         response.error( req, res, errors.array(), 422, 'Unprocessable Entity' )
     }

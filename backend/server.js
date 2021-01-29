@@ -24,7 +24,7 @@ app.use( morgan( 'dev' ) );
 
 // Routes
 router( app ); // Main Routes
-app.use( (req, res) =>  response.error( req, res, '404 Not Found', 404, 'Invalid route' ) ); // 404 Route
+// app.use( (req, res) =>  response.error( req, res, '404 Not Found', 404, 'Invalid route' ) ); // 404 Route
 
 
 // Port listening

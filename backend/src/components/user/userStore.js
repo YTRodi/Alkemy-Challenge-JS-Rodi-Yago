@@ -12,13 +12,23 @@ const getAllUsers = async() => {
     return await User.findAll();
 };
 
-const getOperationById = async ( idUser ) => {
+const getUserById = async ( userId ) => {
 
     return await User.findOne( {
-        where: { id: idUser }
+        where: { id: userId }
     });
 
 };
+
+const getUserByEmail = async ( userEmail ) => {
+    
+    return await User.findOne( {
+        where: { email: userEmail }
+    });
+
+};
+
+
 
 const addUser = async ( bodyUser ) => {
 
@@ -27,18 +37,18 @@ const addUser = async ( bodyUser ) => {
 
 };
 
-const updateUser = async( idUser, bodyUser ) => {
+const updateUser = async( userId, bodyUser ) => {
     
     return await User.update( bodyUser, {
-        where: { id: idUser }
+        where: { id: userId }
     });
 
 };
 
-const deleteUser = async( idUser ) => {
+const deleteUser = async( userId ) => {
 
     return await User.destroy({
-        where: { id: idUser }
+        where: { id: userId }
     });
 
 };
@@ -46,7 +56,8 @@ const deleteUser = async( idUser ) => {
 module.exports = {
     login,
     list: getAllUsers,
-    userById: getOperationById,
+    getUserById: getUserById,
+    getUserByEmail: getUserByEmail,
     add: addUser,
     update: updateUser,
     delete: deleteUser
