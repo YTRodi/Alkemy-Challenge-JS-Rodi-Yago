@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "51df304a-d030-419d-bcc5-a267f8ef0059",
+		"name": "Alkemy Challenge - Rodi Yago",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "operations",
+			"item": [
+				{
+					"name": "GET All - operations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "user_token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/operation/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"operation",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - operation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "user_token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"concept\": \"Peluche gigante\",\r\n    \"amount\": 1000,\r\n    \"type\": \"egreso\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/operation/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"operation",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT - operation by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "user_token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"concept\": \"smartv PHILCO\",\r\n    \"date\": \"9999-01-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/operation/update/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"operation",
+								"update",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - operation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "user_token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/operation/delete/27",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"operation",
+								"delete",
+								"27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - operation by id_user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "GET all - users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"maggielinda\",\r\n    \"email\": \"maggie@gmail.com\",\r\n    \"password\": \"muerdomucho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/add",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT - user by id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"lunalinda\",\r\n    \"email\": \"luna@gmail.com\",\r\n    \"password\": \"ladromucho2021\",\r\n    \"balance\": 5555\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/update/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"update",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/delete/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"delete",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"maggie@gmail.com\",\r\n    \"password\": \"muerdomucho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - renew token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
