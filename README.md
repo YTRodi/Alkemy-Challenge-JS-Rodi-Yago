@@ -5,13 +5,15 @@
 ### Backend:
 <pre>
     cd backend
+    npm i
     nodemon server.js
 </pre>
 
-# Frontend:
+### Frontend:
 <pre>
     cd ..
     cd frontend
+    npm i
     npm start
 </pre>
 
